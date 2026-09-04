@@ -1,0 +1,254 @@
+/* ── Módulo Química ───────────────────────────────────────────── */
+.chem-container {
+  display: grid;
+  grid-template-columns: 210px 1fr 220px;
+  gap: 1.5rem;
+}
+
+.chem-panel {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 1.2rem;
+}
+
+.chem-panel h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clr-text-muted);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.chem-panel h3 i { color: var(--clr-primary); }
+
+/* Grid de elementos */
+.elements-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem; }
+
+.element-btn {
+  background: var(--clr-surface2);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--clr-text);
+  font-family: var(--font-main);
+}
+.element-btn:hover   { border-color:var(--clr-primary); transform:scale(1.05); }
+.element-btn.selected { border-color:var(--clr-accent); background:rgba(0,212,170,0.1); }
+.el-symbol { font-size:1.3rem; font-weight:800; display:block; font-family:var(--font-mono); }
+.el-name   { font-size:0.7rem; color:var(--clr-text-muted); display:block; }
+.el-count  { font-size:0.65rem; color:var(--clr-accent); font-family:var(--font-mono); }
+
+/* Lab */
+.chem-lab { display:flex; flex-direction:column; gap:1rem; align-items:center; }
+.flask-zone { text-align:center; width:100%; }
+.flask-icon { font-size:3rem; color:var(--clr-primary); filter:drop-shadow(0 0 12px var(--clr-primary-glow)); margin-bottom:0.5rem; }
+.flask-label { font-size:0.8rem; color:var(--clr-text-muted); margin-bottom:0.75rem; }
+.flask-selected {
+  min-height:80px;
+  background:var(--clr-surface2);
+  border:2px dashed var(--clr-border);
+  border-radius:var(--radius-md);
+  display:flex; flex-wrap:wrap;
+  align-items:center; justify-content:center;
+  gap:0.4rem; padding:0.8rem;
+}
+.flask-selected .element-tag {
+  background:linear-gradient(135deg,var(--clr-primary),#4a44dd);
+  color:#fff; padding:0.3rem 0.7rem; border-radius:99px;
+  font-size:0.9rem; font-weight:700; font-family:var(--font-mono);
+  cursor:pointer;
+}
+.placeholder-text { color:var(--clr-text-dim); font-size:0.85rem; text-align:center; }
+.chem-controls { display:flex; gap:0.75rem; }
+
+/* Resultado */
+.reaction-result { width:100%; }
+.reaction-result[hidden] { display:none !important; }
+.result-card { background:linear-gradient(135deg,var(--clr-surface2),var(--clr-surface3)); border:1px solid var(--clr-border); border-radius:var(--radius-md); padding:1.2rem; text-align:center; animation:fadeSlideIn 0.4s ease; }
+.result-formula { font-size:2.2rem; font-weight:800; color:var(--clr-accent); font-family:var(--font-mono); }
+.result-name    { font-size:1rem; font-weight:600; margin:0.3rem 0; }
+.result-desc    { font-size:0.85rem; color:var(--clr-text-muted); }
+
+/* Animación de reacción en matraz */
+.flask-zone.reacting .flask-icon {
+  animation: flaskReaction 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  color: var(--clr-accent);
+  filter: drop-shadow(0 0 25px var(--clr-accent));
+}
+
+@keyframes flaskReaction {
+  10%, 90% { transform: translate3d(-2px, 0, 0) scale(1.1); }
+  20%, 80% { transform: translate3d(3px, -2px, 0) scale(1.15); }
+  30%, 50%, 70% { transform: translate3d(-4px, 1px, 0) scale(1.2); }
+  40%, 60% { transform: translate3d(4px, -1px, 0) scale(1.15); }
+}
+
+/* Historial */
+.history-list { display:flex; flex-direction:column; gap:0.5rem; max-height:340px; overflow-y:auto; }
+.history-item { background:var(--clr-surface2); border-radius:var(--radius-sm); padding:0.5rem 0.75rem; font-size:0.82rem; display:flex; gap:0.5rem; align-items:center; }
+.history-item i { color:var(--clr-primary); }
+.history-formula { font-weight:700; color:var(--clr-accent); font-family:var(--font-mono); }
+
+/* ── Catálogo de Reacciones Químicas ───────────────────────────── */
+.chem-catalog-section {
+  margin-top: 2rem;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-xl);
+  padding: 1.8rem;
+}
+
+.catalog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.catalog-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.catalog-title i {
+  font-size: 2rem;
+  color: var(--clr-primary);
+  background: var(--clr-surface2);
+  padding: 0.8rem;
+  border-radius: var(--radius-md);
+}
+.catalog-title h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin-bottom: 0.2rem;
+}
+.catalog-title p {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+}
+
+.catalog-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--clr-surface2);
+  border: 1px solid var(--clr-border);
+  border-radius: 99px;
+  padding: 0.4rem 1rem;
+  min-width: 250px;
+}
+.catalog-search-wrap i { color: var(--clr-text-dim); }
+.catalog-search {
+  background: transparent;
+  border: none;
+  color: var(--clr-text);
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  width: 100%;
+  outline: none;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.catalog-card {
+  background: var(--clr-surface2);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  transition: all var(--transition-fast);
+}
+.catalog-card:hover {
+  border-color: var(--clr-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.catalog-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.catalog-formula {
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--clr-accent);
+}
+.catalog-type-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  background: rgba(108, 99, 255, 0.15);
+  color: var(--clr-primary);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+}
+
+.catalog-name {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+.catalog-eq {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  color: var(--clr-text-muted);
+  background: var(--clr-surface3);
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+.catalog-desc {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.btn-load-recipe {
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background: var(--clr-surface3);
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all var(--transition-fast);
+  margin-top: 0.4rem;
+}
+.btn-load-recipe:hover {
+  background: var(--clr-primary);
+  border-color: var(--clr-primary);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+@media(max-width:900px) {
+  .chem-container { grid-template-columns:1fr; }
+  .chem-history { display:none; }
+  .catalog-header { flex-direction: column; align-items: stretch; }
+  .catalog-search-wrap { width: 100%; }
+}

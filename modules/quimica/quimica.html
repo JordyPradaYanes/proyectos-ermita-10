@@ -1,0 +1,68 @@
+<div class="module-header">
+  <h2><i class="fa-solid fa-flask"></i> Simulador de Química</h2>
+  <p class="module-desc">Selecciona elementos y combínalos para ver qué moléculas puedes formar.</p>
+</div>
+
+<div class="chem-container">
+
+  <!-- Panel izquierdo: elementos disponibles -->
+  <div class="chem-panel chem-elements-panel">
+    <h3><i class="fa-solid fa-circle-nodes"></i> Elementos</h3>
+    <div class="elements-grid" id="elementsGrid"></div>
+  </div>
+
+  <!-- Centro: matraz -->
+  <div class="chem-panel chem-lab">
+    <div class="flask-zone">
+      <i class="fa-solid fa-flask-vial flask-icon"></i>
+      <div class="flask-label">Matraz de reacción</div>
+      <div class="flask-selected" id="flaskSelected">
+        <span class="placeholder-text">Haz clic en los elementos para agregarlos</span>
+      </div>
+    </div>
+    <div class="chem-controls">
+      <button class="btn-primary" id="btnReact">
+        <i class="fa-solid fa-bolt"></i> Reaccionar
+      </button>
+      <button class="btn-secondary" id="btnClearChem">
+        <i class="fa-solid fa-trash"></i> Limpiar
+      </button>
+    </div>
+    <div class="reaction-result" id="reactionResult" hidden>
+      <div class="result-card">
+        <div class="result-formula" id="resultFormula"></div>
+        <div class="result-name"    id="resultName"></div>
+        <div class="result-desc"    id="resultDesc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel derecho: historial -->
+  <div class="chem-panel chem-history">
+    <h3><i class="fa-solid fa-clock-rotate-left"></i> Descubiertas</h3>
+    <div class="history-list" id="historyList">
+      <p class="empty-state">¡Ninguna aún! Combina elementos o usa el catálogo.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Sección completa del Catálogo de Reacciones Químicas -->
+<div class="chem-catalog-section">
+  <div class="catalog-header">
+    <div class="catalog-title">
+      <i class="fa-solid fa-book-journal-whills"></i>
+      <div>
+        <h3>Catálogo de Reacciones Químicas</h3>
+        <p>Aprende las ecuaciones químicas, tipos de enlace y haz clic en <strong>"Cargar en matraz"</strong> para simular cualquier compuesto.</p>
+      </div>
+    </div>
+    <div class="catalog-search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="catalogSearch" class="catalog-search" placeholder="Buscar reacción o compuesto..." />
+    </div>
+  </div>
+  <div class="catalog-grid" id="catalogGrid">
+    <!-- Generado dinámicamente por JS -->
+  </div>
+</div>

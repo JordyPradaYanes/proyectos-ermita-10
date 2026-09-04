@@ -1,0 +1,323 @@
+/* ================================================================
+   PORTAL DE CIENCIAS — css/style.css
+   Estilos GLOBALES: layout, sidebar, topbar, botones, utilidades.
+   Los estilos específicos de cada módulo están en modules/X/X.css
+   ================================================================ */
+
+/* ── 1. FUENTES & VARIABLES ───────────────────────────────────── */
+:root {
+  --clr-bg:           #0d0f1a;
+  --clr-surface:      #131629;
+  --clr-surface2:     #1a1e35;
+  --clr-surface3:     #232845;
+  --clr-border:       rgba(120,130,200,0.18);
+
+  --clr-primary:      #6c63ff;
+  --clr-primary-glow: rgba(108,99,255,0.35);
+  --clr-accent:       #00d4aa;
+  --clr-accent2:      #ff6b6b;
+  --clr-warning:      #ffd166;
+  --clr-success:      #06d6a0;
+  --clr-error:        #ef476f;
+
+  --clr-text:         #e8eaf6;
+  --clr-text-muted:   #8b93c4;
+  --clr-text-dim:     #555e99;
+
+  --font-main: 'Outfit', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --sidebar-w:   260px;
+  --topbar-h:    60px;
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   22px;
+  --radius-xl:   32px;
+
+  --transition:      0.3s cubic-bezier(0.4,0,0.2,1);
+  --transition-fast: 0.15s ease;
+
+  --shadow-sm:   0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md:   0 4px 20px rgba(0,0,0,0.4);
+  --shadow-lg:   0 8px 40px rgba(0,0,0,0.5);
+  --shadow-glow: 0 0 20px var(--clr-primary-glow);
+}
+
+/* Tema claro (alternativo) */
+body.light-theme {
+  --clr-bg:        #f0f2ff;
+  --clr-surface:   #ffffff;
+  --clr-surface2:  #eef0ff;
+  --clr-surface3:  #e2e5ff;
+  --clr-border:    rgba(108,99,255,0.15);
+  --clr-text:      #1a1e35;
+  --clr-text-muted:#5560a0;
+  --clr-text-dim:  #8890c0;
+  --shadow-sm:     0 2px 8px rgba(108,99,255,0.08);
+  --shadow-md:     0 4px 20px rgba(108,99,255,0.12);
+}
+
+/* ── 2. RESET & BASE ──────────────────────────────────────────── */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; }
+
+body {
+  font-family: var(--font-main);
+  background:  var(--clr-bg);
+  color:       var(--clr-text);
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  grid-template-rows:    var(--topbar-h) 1fr;
+  grid-template-areas:   "sidebar topbar" "sidebar main";
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+}
+
+::-webkit-scrollbar       { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:var(--clr-surface); }
+::-webkit-scrollbar-thumb { background:var(--clr-primary); border-radius:99px; }
+
+/* Utilidades globales */
+.mono       { font-family: var(--font-mono); }
+.big-icon   { font-size: 3.5rem; display:block; color: var(--clr-primary); margin-bottom:0.5rem; }
+.empty-state { color:var(--clr-text-dim); font-size:0.85rem; text-align:center; padding:1rem; }
+
+/* ── 3. SIDEBAR ───────────────────────────────────────────────── */
+.sidebar {
+  grid-area: sidebar;
+  background: var(--clr-surface);
+  border-right: 1px solid var(--clr-border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  transition: transform var(--transition);
+  z-index: 200;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid var(--clr-border);
+  background: linear-gradient(135deg, var(--clr-primary) 0%, #4a44dd 100%);
+}
+
+.logo            { display:flex; align-items:center; gap:0.75rem; }
+.logo-icon       { font-size:1.8rem; color:#fff; filter:drop-shadow(0 0 8px rgba(255,255,255,0.4)); }
+.logo-text strong { font-size:0.95rem; font-weight:700; color:#fff; display:block; }
+.logo-text small  { font-size:0.7rem; color:rgba(255,255,255,0.75); }
+
+.sidebar-toggle {
+  display:none;
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:1.2rem;
+  cursor:pointer;
+  padding:0.3rem;
+}
+
+.sidebar-nav           { flex:1; padding:1rem 0.75rem; overflow-y:auto; }
+.sidebar-nav ul        { list-style:none; display:flex; flex-direction:column; gap:0.3rem; }
+
+.nav-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--clr-text-muted);
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+.nav-btn:hover  { background:var(--clr-surface2); color:var(--clr-text); transform:translateX(3px); }
+.nav-btn.active { background:linear-gradient(135deg,var(--clr-primary),#4a44dd); color:#fff; box-shadow:var(--shadow-glow); }
+.nav-btn.active::before {
+  content:'';
+  position:absolute;
+  left:-0.75rem; top:50%;
+  transform:translateY(-50%);
+  width:3px; height:60%;
+  background:var(--clr-accent);
+  border-radius:99px;
+}
+
+.nav-icon        { font-size:1rem; flex-shrink:0; width:18px; text-align:center; }
+.sidebar-footer  { padding:1rem; text-align:center; color:var(--clr-text-dim); font-size:0.75rem; border-top:1px solid var(--clr-border); }
+
+/* ── 4. TOPBAR ────────────────────────────────────────────────── */
+.topbar {
+  grid-area: topbar;
+  background: var(--clr-surface);
+  border-bottom: 1px solid var(--clr-border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--clr-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+.menu-btn:hover { background:var(--clr-surface2); }
+
+.topbar-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  flex: 1;
+  background: linear-gradient(90deg, var(--clr-primary), var(--clr-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.theme-toggle {
+  background: var(--clr-surface2);
+  border: 1px solid var(--clr-border);
+  border-radius: 50%;
+  width: 38px; height: 38px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform var(--transition-fast), background var(--transition);
+  display: flex; align-items:center; justify-content:center;
+  color: var(--clr-text);
+}
+.theme-toggle:hover { transform:rotate(20deg) scale(1.1); }
+
+/* ── 5. MAIN CONTENT ──────────────────────────────────────────── */
+.main-content {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 2rem;
+  background: var(--clr-bg);
+}
+
+/* ── 6. MÓDULOS — animación de entrada ───────────────────────── */
+.module-container {
+  animation: fadeSlideIn 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.module-container[hidden] { display:none; }
+
+@keyframes fadeSlideIn {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* Cabecera compartida de cada módulo */
+.module-header        { margin-bottom:2rem; }
+.module-header h2     { font-size:1.8rem; font-weight:800; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.75rem; }
+.module-header h2 i   { color:var(--clr-primary); font-size:1.5rem; }
+.module-desc          { color:var(--clr-text-muted); font-size:0.95rem; max-width:65ch; }
+
+/* Loading screen */
+.loading-screen {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:1rem; height:300px; color:var(--clr-text-muted); font-size:0.95rem;
+}
+/* Utilidad global para ocultar elementos de forma estricta */
+[hidden] { display: none !important; }
+.loading-screen[hidden] { display: none !important; }
+.loading-icon { font-size:2.5rem; color:var(--clr-primary); }
+
+/* ── 7. BOTONES GLOBALES ──────────────────────────────────────── */
+.btn-primary, .btn-secondary {
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.btn-primary  { background:linear-gradient(135deg,var(--clr-primary),#4a44dd); color:#fff; box-shadow:0 4px 12px var(--clr-primary-glow); }
+.btn-primary:hover  { transform:translateY(-2px); box-shadow:0 6px 20px var(--clr-primary-glow); }
+.btn-primary:active { transform:translateY(0); }
+.btn-secondary      { background:var(--clr-surface2); color:var(--clr-text); border:1px solid var(--clr-border); }
+.btn-secondary:hover { background:var(--clr-surface3); border-color:var(--clr-primary); }
+.btn-secondary.active-mode { border-color:var(--clr-primary); color:var(--clr-primary); background:rgba(108,99,255,0.1); }
+
+/* ── 8. INPUTS GLOBALES ───────────────────────────────────────── */
+.num-input,.text-input {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  background: var(--clr-surface2);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  color: var(--clr-text);
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.num-input:focus,.text-input:focus { outline:none; border-color:var(--clr-primary); box-shadow:0 0 0 3px var(--clr-primary-glow); }
+.input-group               { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1rem; }
+.input-group label         { font-size:0.88rem; font-weight:600; color:var(--clr-text-muted); }
+
+/* Slider */
+.slider { -webkit-appearance:none; width:100%; height:6px; border-radius:99px; background:var(--clr-surface3); outline:none; margin-top:0.4rem; }
+.slider::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--clr-primary); cursor:pointer; box-shadow:0 0 8px var(--clr-primary-glow); transition:transform var(--transition-fast); }
+.slider::-webkit-slider-thumb:hover { transform:scale(1.2); }
+
+/* ── 9. HUD CARDS ─────────────────────────────────────────────── */
+.hud-card { background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--radius-md); padding:0.9rem 1.4rem; text-align:center; display:flex; flex-direction:column; gap:0.3rem; min-width:90px; }
+.hud-label { font-size:0.78rem; color:var(--clr-text-muted); text-transform:uppercase; letter-spacing:0.05em; }
+.hud-val   { font-size:1.6rem; font-weight:700; color:var(--clr-primary); }
+.timer-card .hud-val  { color:var(--clr-accent2); }
+.timer-card.urgent .hud-val { color:var(--clr-error); animation:pulse 0.5s infinite alternate; }
+@keyframes pulse { from{transform:scale(1)} to{transform:scale(1.08)} }
+
+/* ── 10. MODAL GLOBAL ─────────────────────────────────────────── */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; z-index:1000; padding:1rem; }
+.modal-overlay[hidden] { display:none; }
+.modal-card { background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--radius-lg); padding:2rem; max-width:520px; width:100%; position:relative; animation:modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1); box-shadow:var(--shadow-lg); }
+@keyframes modalIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
+.modal-close { position:absolute; top:1rem; right:1rem; background:var(--clr-surface2); border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; color:var(--clr-text); font-size:1rem; display:flex; align-items:center; justify-content:center; transition:background var(--transition-fast); }
+.modal-close:hover { background:var(--clr-error); color:#fff; }
+
+/* ── 11. PROGRESS BAR ─────────────────────────────────────────── */
+.progress-bar  { background:var(--clr-surface2); height:6px; border-radius:99px; overflow:hidden; }
+.progress-fill { background:linear-gradient(90deg,var(--clr-primary),var(--clr-accent)); height:100%; border-radius:99px; transition:width 0.4s ease; }
+
+/* ── 12. SIDEBAR OVERLAY MÓVIL ────────────────────────────────── */
+.sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:150; backdrop-filter:blur(2px); }
+
+/* ── 13. RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  body { grid-template-columns:1fr; grid-template-areas:"topbar" "main"; }
+  .sidebar { position:fixed; left:0; top:0; height:100vh; transform:translateX(-100%); z-index:300; }
+  .sidebar.open { transform:translateX(0); }
+  .sidebar-overlay.show { display:block; }
+  .sidebar-toggle { display:flex; }
+  .menu-btn { display:flex; }
+}
+@media (max-width: 600px) {
+  .main-content { padding:1rem; }
+  .module-header h2 { font-size:1.3rem; }
+}

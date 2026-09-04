@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portal de Ciencias e Interactividad — 10 módulos educativos para grados 10° y 11°." />
+  <title>Portal de Ciencias e Interactividad</title>
+
+  <!-- Font Awesome 6 (iconos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Estilos globales -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- =====================================================
+       SIDEBAR — Navegación lateral
+       ===================================================== -->
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Menú de módulos">
+
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="fa-solid fa-atom logo-icon"></i>
+        <div class="logo-text">
+          <strong>Portal Ciencias</strong>
+          <small>Grados 10° y 11°</small>
+        </div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Cerrar menú">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul id="navList" role="list">
+        <li><button class="nav-btn active" data-module="quimica" aria-current="page">
+          <i class="fa-solid fa-flask nav-icon"></i><span>Simulador de Química</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="ondas">
+          <i class="fa-solid fa-wave-square nav-icon"></i><span>Simulador de Ondas</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="cuerpo">
+          <i class="fa-solid fa-heart-pulse nav-icon"></i><span>Cuerpo Humano</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="tabla">
+          <i class="fa-solid fa-table-cells nav-icon"></i><span>Tabla Periódica</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="matematica">
+          <i class="fa-solid fa-calculator nav-icon"></i><span>Misión Matemática</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="memoria">
+          <i class="fa-solid fa-clone nav-icon"></i><span>Memoria en Inglés</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="pitagoras">
+          <i class="fa-solid fa-drafting-compass nav-icon"></i><span>Pitágoras</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="trivia">
+          <i class="fa-solid fa-trophy nav-icon"></i><span>Trivia Multijugador</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="piramide">
+          <i class="fa-solid fa-layer-group nav-icon"></i><span>Pirámide Alimenticia</span>
+        </button></li>
+        <li><button class="nav-btn" data-module="gravedad">
+          <i class="fa-solid fa-earth-americas nav-icon"></i><span>Lab de Gravedad</span>
+        </button></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <small>Portal Ciencias &copy; 2026</small>
+    </div>
+  </aside>
+
+  <!-- Overlay oscuro al abrir sidebar en móvil -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- =====================================================
+       TOPBAR — Barra superior
+       ===================================================== -->
+  <header class="topbar" role="banner">
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <h1 class="topbar-title" id="topbarTitle">Simulador de Química</h1>
+    <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+  </header>
+
+  <!-- =====================================================
+       MAIN — Contenido cargado dinámicamente
+       ===================================================== -->
+  <main class="main-content" id="mainContent" role="main">
+
+    <!-- Pantalla de carga (visible mientras se fetch el módulo) -->
+    <div class="loading-screen" id="loadingScreen" hidden>
+      <i class="fa-solid fa-circle-notch fa-spin loading-icon"></i>
+      <p>Cargando módulo…</p>
+    </div>
+
+    <!-- Aquí se inyecta el HTML de cada módulo -->
+    <div id="moduleContent"></div>
+
+  </main>
+
+  <!-- Router principal -->
+  <script src="js/main.js"></script>
+</body>
+</html>
