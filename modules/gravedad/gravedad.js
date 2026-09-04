@@ -122,6 +122,11 @@
 
     $btn.addEventListener('click', startDrop);
     
+    const $resetBtn = document.getElementById('gravResetBtn');
+    if ($resetBtn) {
+      $resetBtn.addEventListener('click', reset);
+    }
+    
     reset();
   }
 
