@@ -1,11 +1,15 @@
 /**
  * quimica.js — Simulador de Química Interactivo
- * Permite seleccionar elementos, combinarlos en el matraz de reacción,
- * explorar el catálogo completo con ecuaciones balanceadas y cargar recetas con 1 clic.
+ * ¡Bienvenidos al Laboratorio de Química Secreto! 🧪
+ * Aquí vamos a mezclar elementos para ver qué pasa. ¡Cuidado con las explosiones!
  */
 (function () {
   'use strict';
 
+  // 🧪 ZONA DE HACKEO: ¡Nuevos Elementos!
+  // Esta es una lista (Array) de los ingredientes mágicos.
+  // Cada ingrediente tiene un símbolo (H), un nombre (Hidrógeno) y un color.
+  // ¿Qué pasa si le cambias el color al Hidrógeno? ¡Prueba con '#ff0000' (rojo)!
   const ELEMENTS = [
     { symbol: 'H',  name: 'Hidrógeno', color: '#4cc9f0' },
     { symbol: 'O',  name: 'Oxígeno',   color: '#ef476f' },
@@ -17,15 +21,18 @@
     { symbol: 'Fe', name: 'Hierro',    color: '#c77dff' },
   ];
 
-  // Base de datos de reacciones químicas posibles
+  // 💥 ZONA DE HACKEO: ¡Invéntate una reacción!
+  // Este es el recetario del laboratorio (un "Objeto" de JavaScript).
+  // Si mezclas 'H,H,O' sale Agua. 
+  // ¡Crea tu propia receta copiando una y cambiando la mezcla!
   const REACTIONS = {
     'H,H,O': {
       formula: 'H₂O',
       name: 'Agua',
       equation: '2H₂ + O₂ → 2H₂O',
       type: 'Enlace Covalente',
-      icon: 'fa-droplet',
-      elements: ['H', 'H', 'O'],
+      icon: 'fa-droplet', // Este es un icono (una gotita)
+      elements: ['H', 'H', 'O'], // Estos son los ingredientes de la receta
       desc: 'El solvente universal de la vida. Compone más del 70% de nuestro cuerpo y la Tierra.'
     },
     'H,H': {
@@ -156,84 +163,96 @@
     }
   };
 
-  let selected = [];
-  const discovered = new Set();
+  // Variables para recordar qué hemos hecho
+  let selected = []; // Una lista vacía donde meteremos los elementos que escojamos
+  const discovered = new Set(); // Una caja fuerte para guardar los descubrimientos sin repetirlos
 
+  // Variables para conectar el código con las partes de la pantalla
   let $grid, $flaskSelected, $result, $formula, $name, $desc, $history, $catalogGrid, $catalogSearch, $flaskZone;
 
+  // Esta función dibuja los botoncitos de los elementos en la pantalla
   function renderElements() {
-    $grid.innerHTML = '';
-    ELEMENTS.forEach(el => {
-      const btn = document.createElement('button');
+    $grid.innerHTML = ''; // Limpiamos la mesa antes de poner los botones
+    ELEMENTS.forEach(el => { // Para cada elemento...
+      const btn = document.createElement('button'); // ...creamos un botón
       btn.className = 'element-btn';
       btn.setAttribute('aria-label', `Agregar ${el.name}`);
       btn.innerHTML = `
         <span class="el-symbol" style="color:${el.color}">${el.symbol}</span>
         <span class="el-name">${el.name}</span>
         <span class="el-count" id="qcount-${el.symbol}"></span>`;
+      
+      // Cuando haces clic en el botón, llama a "addElement" (Añadir elemento)
       btn.addEventListener('click', () => addElement(el.symbol));
-      $grid.appendChild(btn);
+      $grid.appendChild(btn); // Lo ponemos en la pantalla
     });
   }
 
+  // Mete un ingrediente al matraz
   function addElement(symbol) {
-    if (selected.length >= 6) return;
-    selected.push(symbol);
-    updateFlask();
+    if (selected.length >= 6) return; // ¡El matraz se llena si pones más de 6!
+    selected.push(symbol); // Metemos el elemento a nuestra lista "selected"
+    updateFlask(); // Actualizamos el dibujo del matraz
   }
 
+  // Refresca la pantalla para mostrar qué hay dentro del matraz
   function updateFlask() {
     $flaskSelected.innerHTML = '';
-    if (!selected.length) {
+    if (!selected.length) { // Si el matraz está vacío...
       $flaskSelected.innerHTML = '<span class="placeholder-text">Haz clic en los elementos para agregarlos</span>';
-    } else {
+    } else { // Si hay cosas adentro...
       selected.forEach((sym, i) => {
         const tag = document.createElement('span');
         tag.className = 'element-tag';
         tag.textContent = sym;
         tag.title = 'Clic para quitar';
+        
+        // Si haces clic en un elemento dentro del matraz, ¡lo sacas!
         tag.addEventListener('click', () => {
-          selected.splice(i, 1);
+          selected.splice(i, 1); // Lo borra de la lista
           updateFlask();
-          $result.hidden = true;
+          $result.hidden = true; // Oculta los resultados viejos
         });
         $flaskSelected.appendChild(tag);
       });
     }
 
+    // Actualiza los numeritos chiquitos en los botones de la tabla
     ELEMENTS.forEach(el => {
       const c = document.getElementById(`qcount-${el.symbol}`);
       if (!c) return;
-      const n = selected.filter(s => s === el.symbol).length;
+      const n = selected.filter(s => s === el.symbol).length; // Cuenta cuántos pusimos
       c.textContent = n > 0 ? `×${n}` : '';
     });
   }
 
+  // 🧪 ¡La función mágica que hace la explosión química!
   function react() {
-    if (!selected.length) return;
+    if (!selected.length) return; // Si no hay nada, no hace nada
 
-    // Efecto visual interactivo en el matraz
+    // Hacemos que el matraz tiemble un poquito en la pantalla
     if ($flaskZone) {
       $flaskZone.classList.remove('reacting');
-      void $flaskZone.offsetWidth; // Reflow para reiniciar animación
+      void $flaskZone.offsetWidth; // Un truco mágico para que vuelva a temblar
       $flaskZone.classList.add('reacting');
-      setTimeout(() => $flaskZone.classList.remove('reacting'), 700);
+      setTimeout(() => $flaskZone.classList.remove('reacting'), 700); // Para de temblar después de un ratito
     }
 
+    // Ordenamos nuestros ingredientes como un diccionario (A-Z) para buscarlos fácil
     const key = [...selected].sort().join(',');
-    const rxn = REACTIONS[key];
+    const rxn = REACTIONS[key]; // Buscamos en el recetario si existe esa mezcla
 
-    if (rxn) {
+    if (rxn) { // ¡Si existe!
       $formula.innerHTML = `<i class="fa-solid ${rxn.icon}"></i> ${rxn.formula}`;
       $name.textContent  = rxn.name;
       $desc.innerHTML    = `<strong>Ecuación:</strong> <span class="mono">${rxn.equation}</span><br>${rxn.desc}`;
-      $result.hidden     = false;
+      $result.hidden     = false; // Muestra la respuesta
 
-      if (!discovered.has(key)) {
-        discovered.add(key);
-        addToHistory(rxn);
+      if (!discovered.has(key)) { // Si nunca lo habíamos descubierto antes...
+        discovered.add(key); // ¡Lo guardamos como nuevo descubrimiento!
+        addToHistory(rxn); // Lo añadimos a tu historia de científico
       }
-    } else {
+    } else { // Si mezclaste algo que no existe en nuestro recetario...
       $formula.innerHTML = '<i class="fa-solid fa-question"></i> Sin reacción';
       $name.textContent  = 'Combinación desconocida';
       $desc.textContent  = '¡Sigue explorando! Los elementos en estas proporciones no forman un compuesto estable en este simulador. Revisa el catálogo abajo para descubrir las recetas válidas.';
@@ -241,45 +260,49 @@
     }
   }
 
+  // Agrega tu descubrimiento a la lista lateral
   function addToHistory(rxn) {
     const empty = $history.querySelector('.empty-state');
-    if (empty) empty.remove();
+    if (empty) empty.remove(); // Borra el mensaje de "No hay nada"
 
     const item = document.createElement('div');
     item.className = 'history-item';
     item.innerHTML = `<i class="fa-solid ${rxn.icon}"></i><span class="history-formula">${rxn.formula}</span><span>${rxn.name}</span>`;
-    $history.prepend(item);
+    $history.prepend(item); // Lo pone de primero en la lista
   }
 
+  // ¡Vacia el matraz y limpia todo!
   function clearFlask() {
-    selected = [];
-    updateFlask();
-    $result.hidden = true;
+    selected = []; // La lista de ingredientes se queda vacía
+    updateFlask(); // Refrescamos
+    $result.hidden = true; // Escondemos resultados viejos
     ELEMENTS.forEach(el => {
       const c = document.getElementById(`qcount-${el.symbol}`);
       if (c) c.textContent = '';
     });
   }
 
-  // Cargar una receta automáticamente al matraz y simularla
+  // Cargar una receta automáticamente al matraz como si tuviéramos un ayudante robot
   function loadRecipe(elementsList) {
-    selected = [...elementsList];
+    selected = [...elementsList]; // Copia los ingredientes de la receta
     updateFlask();
-    react();
-    // Desplazar suavemente hacia el matraz en pantallas pequeñas
+    react(); // ¡Y los mezcla!
+    
+    // Si estás en un teléfono o tablet pequeña, baja la pantalla solito
     if (window.innerWidth < 900) {
       document.querySelector('.chem-lab')?.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
-  // Renderizar el catálogo completo de reacciones químicas
+  // Dibuja el catálogo gigante de todas las reacciones que existen
   function renderCatalog(filterText = '') {
     if (!$catalogGrid) return;
     $catalogGrid.innerHTML = '';
 
     const query = filterText.toLowerCase().trim();
-    const rxnList = Object.values(REACTIONS);
+    const rxnList = Object.values(REACTIONS); // Saca todas las recetas del libro
 
+    // Filtra las recetas por si escribiste algo en la cajita de búsqueda
     const filtered = rxnList.filter(rxn => {
       if (!query) return true;
       return rxn.name.toLowerCase().includes(query) ||
@@ -293,6 +316,7 @@
       return;
     }
 
+    // Por cada receta, dibujamos una tarjetita
     filtered.forEach(rxn => {
       const card = document.createElement('div');
       card.className = 'catalog-card';
@@ -309,6 +333,7 @@
         </button>
       `;
 
+      // Cuando hacemos clic en "Cargar en matraz", llama al robot ayudante
       card.querySelector('.btn-load-recipe').addEventListener('click', () => {
         loadRecipe(rxn.elements);
       });
@@ -317,7 +342,9 @@
     });
   }
 
+  // Esta función prepara y arranca nuestro laboratorio por primera vez
   function init() {
+    // Buscamos todas las partes de la pantalla por sus IDs
     $grid          = document.getElementById('elementsGrid');
     $flaskSelected = document.getElementById('flaskSelected');
     $result        = document.getElementById('reactionResult');
@@ -329,12 +356,14 @@
     $catalogSearch = document.getElementById('catalogSearch');
     $flaskZone     = document.querySelector('.flask-zone');
 
-    renderElements();
-    renderCatalog();
+    renderElements(); // Dibuja los botones
+    renderCatalog(); // Dibuja el libro de recetas
 
+    // Conectamos los botones principales
     document.getElementById('btnReact').addEventListener('click', react);
     document.getElementById('btnClearChem').addEventListener('click', clearFlask);
 
+    // Si escribimos algo en el buscador, busca rápido (sin presionar Enter)
     if ($catalogSearch) {
       $catalogSearch.addEventListener('input', e => {
         renderCatalog(e.target.value);
@@ -342,5 +371,6 @@
     }
   }
 
+  // Guarda nuestro laboratorio para que el menú principal sepa arrancarlo
   window.MODULES.quimica = { init };
 })();

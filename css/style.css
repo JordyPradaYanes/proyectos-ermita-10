@@ -1,29 +1,39 @@
 /* ================================================================
    PORTAL DE CIENCIAS — css/style.css
-   Estilos GLOBALES: layout, sidebar, topbar, botones, utilidades.
-   Los estilos específicos de cada módulo están en modules/X/X.css
+   ¡Bienvenido al ropero de la página web! 👕👗
+   Aquí es donde le ponemos los colores, los tamaños y el estilo a todo.
    ================================================================ */
 
 /* ── 1. FUENTES & VARIABLES ───────────────────────────────────── */
+/* 🎨 ZONA DE HACKEO: ¡Cambia los colores de toda la página! 
+   Las palabras que empiezan con "--clr" son nuestros marcadores mágicos.
+   Puedes cambiar los códigos que tienen un "#" por otros colores.
+   Busca "Color Picker" en Google para encontrar tu color favorito. */
 :root {
+  /* Colores oscuros de fondo */
   --clr-bg:           #0d0f1a;
   --clr-surface:      #131629;
   --clr-surface2:     #1a1e35;
   --clr-surface3:     #232845;
   --clr-border:       rgba(120,130,200,0.18);
 
-  --clr-primary:      #6c63ff;
-  --clr-primary-glow: rgba(108,99,255,0.35);
-  --clr-accent:       #00d4aa;
-  --clr-accent2:      #ff6b6b;
-  --clr-warning:      #ffd166;
-  --clr-success:      #06d6a0;
-  --clr-error:        #ef476f;
+  /* ¡Los colores más importantes! (Botones, detalles) */
+  --clr-primary:      #6c63ff; /* Morado espacial */
+  --clr-primary-glow: rgba(108,99,255,0.35); /* El brillo morado */
+  --clr-accent:       #00d4aa; /* Verde menta */
+  --clr-accent2:      #ff6b6b; /* Rojo suavecito */
+  
+  /* Colores de mensajes */
+  --clr-warning:      #ffd166; /* Amarillo (Advertencia) */
+  --clr-success:      #06d6a0; /* Verde (¡Correcto!) */
+  --clr-error:        #ef476f; /* Rojo (Error) */
 
-  --clr-text:         #e8eaf6;
-  --clr-text-muted:   #8b93c4;
-  --clr-text-dim:     #555e99;
+  /* Colores del texto (las letras) */
+  --clr-text:         #e8eaf6; /* Blanco azulado */
+  --clr-text-muted:   #8b93c4; /* Gris */
+  --clr-text-dim:     #555e99; /* Gris oscuro */
 
+  /* 🖋️ ZONA DE HACKEO: Tipos de letras (Fuentes) */
   --font-main: 'Outfit', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
